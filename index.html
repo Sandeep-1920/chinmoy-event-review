@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You – Chinmoy Events & Wedding Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #D4AF37;
+    --gold-light: #F0D070;
+    --gold-dark: #A88A1A;
+    --gold-pale: #FDF8E8;
+    --dark: #1A1610;
+    --mid: #4A4030;
+    --muted: #8A7A60;
+    --white: #FFFFFF;
+    --off-white: #FAFAF7;
+    --card-bg: #FFFFFF;
+    --border: rgba(212, 175, 55, 0.25);
+    --shadow: 0 8px 40px rgba(212, 175, 55, 0.12), 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--off-white);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Decorative background ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 0%, rgba(212,175,55,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 100%, rgba(212,175,55,0.07) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrapper { position: relative; z-index: 1; }
+
+  /* ── Floating confetti ── */
+  .confetti-field {
+    position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
+  }
+  .dot {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    animation: floatUp var(--dur) var(--delay) ease-in-out infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.55; }
+    90%  { opacity: 0.35; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ── Header ── */
+  header {
+    text-align: center;
+    padding: 3.5rem 1.5rem 2.5rem;
+    position: relative;
+  }
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+    color: var(--dark);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 1.4rem;
+  }
+  .brand-badge::before, .brand-badge::after { content: '✦'; font-size: 9px; }
+
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1.18;
+    color: var(--dark);
+    margin-bottom: 0.6rem;
+  }
+  header h1 span { color: var(--gold-dark); font-style: italic; }
+
+  .header-subtitle {
+    font-size: clamp(13px, 2.5vw, 15px);
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto 1rem;
+    line-height: 1.7;
+  }
+
+  .ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--gold);
+    font-size: 18px;
+    margin-top: 0.5rem;
+  }
+  .ornament::before, .ornament::after {
+    content: '';
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .ornament::after { background: linear-gradient(to left, transparent, var(--gold)); }
+
+  /* ── Main card ── */
+  .main-section {
+    padding: 0 1rem 3rem;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 2.2rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-header {
+    text-align: center;
+    margin-bottom: 1.8rem;
+  }
+  .card-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+  .card-header p {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* ── Radio options ── */
+  .review-options { display: flex; flex-direction: column; gap: 12px; }
+
+  .review-option {
+    position: relative;
+    cursor: pointer;
+  }
+  .review-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+  .option-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 1.5px solid rgba(212,175,55,0.22);
+    border-radius: 14px;
+    background: var(--gold-pale);
+    cursor: pointer;
+    transition: all 0.22s ease;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--mid);
+    line-height: 1.4;
+    user-select: none;
+  }
+  .option-label:hover {
+    border-color: var(--gold);
+    background: #FEF5CC;
+    transform: translateX(3px);
+  }
+  .review-option input:checked + .option-label {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, #FEF5CC 0%, #FDF0A8 100%);
+    color: var(--dark);
+    font-weight: 500;
+    box-shadow: 0 2px 12px rgba(212,175,55,0.22);
+  }
+
+  .radio-ring {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(212,175,55,0.5);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    background: white;
+  }
+  .radio-ring::after {
+    content: '';
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+  .review-option input:checked + .option-label .radio-ring {
+    border-color: var(--gold);
+    background: white;
+  }
+  .review-option input:checked + .option-label .radio-ring::after { opacity: 1; }
+
+  .option-icon { font-size: 18px; }
+
+  /* ── Buttons ── */
+  .btn-copy {
+    width: 100%;
+    margin-top: 1.6rem;
+    padding: 14px 24px;
+    background: white;
+    border: 1.5px solid var(--gold);
+    color: var(--gold-dark);
+    border-radius: 12px;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: all 0.22s ease;
+  }
+  .btn-copy:hover {
+    background: var(--gold-pale);
+    box-shadow: 0 4px 16px rgba(212,175,55,0.22);
+    transform: translateY(-1px);
+  }
+  .btn-copy:active { transform: scale(0.98); }
+
+  .success-msg {
+    display: none;
+    text-align: center;
+    color: #2E7D32;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 16px;
+    background: #E8F5E9;
+    border-radius: 10px;
+    margin-top: 10px;
+    animation: fadeIn 0.3s ease;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .success-msg.visible { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .btn-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 17px 24px;
+    background: linear-gradient(135deg, #2E7D32 0%, #388E3C 50%, #1B5E20 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.24s ease;
+    box-shadow: 0 4px 20px rgba(46,125,50,0.32);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-submit::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(46,125,50,0.38);
+  }
+  .btn-submit:hover::before { opacity: 1; }
+  .btn-submit:active { transform: scale(0.98); }
+
+  /* ── Steps card ── */
+  .steps-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 1.8rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .steps-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .steps-list { list-style: none; counter-reset: step-counter; }
+  .steps-list li {
+    counter-increment: step-counter;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(212,175,55,0.2);
+    font-size: 14px;
+    color: var(--mid);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before {
+    content: counter(step-counter);
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    color: var(--dark);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ── Thank you section ── */
+  .thankyou-section {
+    text-align: center;
+    padding: 1.5rem 1rem 1rem;
+  }
+  .heart-display {
+    font-size: 36px;
+    animation: heartbeat 1.6s ease-in-out infinite;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15%       { transform: scale(1.18); }
+    30%       { transform: scale(1); }
+    45%       { transform: scale(1.10); }
+  }
+  .thankyou-section p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 1.8rem 1rem 2.5rem;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+  footer strong {
+    color: var(--gold-dark);
+    font-weight: 500;
+  }
+
+  /* ── Alert toast ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #B71C1C;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 999;
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+    white-space: nowrap;
+    opacity: 0;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    .card, .steps-card { padding: 1.5rem 1.2rem; }
+    header { padding: 2.5rem 1.2rem 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating confetti dots -->
+<div class="confetti-field" id="confetti" aria-hidden="true"></div>
+
+<div class="page-wrapper">
+
+  <!-- Header -->
+  <header>
+    <div class="brand-badge">Chinmoy Events &amp; Wedding Planner</div>
+    <h1>Thank You for <span>Choosing Us</span></h1>
+    <p class="header-subtitle">We are grateful to be part of your special moments. Your valuable review helps us grow and serve more customers.</p>
+    <div class="ornament">✦</div>
+  </header>
+
+  <!-- Main section -->
+  <main class="main-section">
+
+    <!-- Review card -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Choose Your Review</h2>
+        <p>Select one of the review options below</p>
+      </div>
+
+      <div class="review-options" role="radiogroup" aria-label="Review options">
+
+        <label class="review-option">
+          <input type="radio" name="review" value="Best Event Planner in Bankura – Chinmoy Events & Wedding Planner delivered an exceptional experience from start to finish. Highly recommended!">
+          <span class="option-label">
+            <span class="radio-ring"></span>
+            <span class="option-icon">🏆</span>
+            <span>Best Event Planner in Bankura</span>
+          </span>
+        </label>
+
+        <label class="review-option">
+          <input type="radio" name="review" value="Excellent Wedding Decoration Service! Chinmoy Events & Wedding Planner transformed our venue into a dream setting. Absolutely stunning work!">
+          <span class="option-label">
+            <span class="radio-ring"></span>
+            <span class="option-icon">💐</span>
+            <span>Excellent Wedding Decoration Service</span>
+          </span>
+        </label>
+
+        <label class="review-option">
+          <input type="radio" name="review" value="Highly Professional and Creative Team! Chinmoy Events & Wedding Planner handled everything perfectly. Their attention to detail is unmatched.">
+          <span class="option-label">
+            <span class="radio-ring"></span>
+            <span class="option-icon">⭐</span>
+            <span>Highly Professional and Creative Team</span>
+          </span>
+        </label>
+
+        <label class="review-option">
+          <input type="radio" name="review" value="Outstanding Service and Beautiful Decoration by Chinmoy Events & Wedding Planner. They made our special day truly memorable. Five stars!">
+          <span class="option-label">
+            <span class="radio-ring"></span>
+            <span class="option-icon">✨</span>
+            <span>Outstanding Service and Beautiful Decoration</span>
+          </span>
+        </label>
+
+      </div>
+
+      <!-- Copy button -->
+      <button class="btn-copy" onclick="copyReview()" aria-label="Copy selected review to clipboard">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy Selected Review
+      </button>
+
+      <div class="success-msg" id="successMsg" role="alert" aria-live="polite">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        Review copied successfully! Now click Submit Review.
+      </div>
+
+      <!-- Submit button -->
+      <a class="btn-submit" href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review" target="_blank" rel="noopener noreferrer" role="button" aria-label="Submit review on Google – opens in new tab">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#fff" opacity=".95"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#fff" opacity=".85"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#fff" opacity=".75"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#fff" opacity=".85"/></svg>
+        Submit Review on Google
+      </a>
+    </div>
+
+    <!-- Steps card -->
+    <div class="steps-card">
+      <h3>
+        <svg width="20" height="20" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        How it works
+      </h3>
+      <ol class="steps-list">
+        <li>Select your preferred review from the options above</li>
+        <li>Click "Copy Selected Review" to copy the text</li>
+        <li>Click "Submit Review on Google" to open the review page</li>
+        <li>Paste the copied review into the text field on Google</li>
+        <li>Click "Post" to publish your review — thank you! 🙏</li>
+      </ol>
+    </div>
+
+    <!-- Thank you section -->
+    <div class="thankyou-section">
+      <span class="heart-display" aria-hidden="true">❤️</span>
+      <p>Thank you for supporting<br><strong style="font-style:normal; color: var(--gold-dark);">Chinmoy Events &amp; Wedding Planner</strong></p>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    © 2026 <strong>Chinmoy Events &amp; Wedding Planner</strong><br>
+    Crafted with Love for Our Valuable Clients
+  </footer>
+
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<script>
+  /* ── Confetti dots ── */
+  (function() {
+    var field = document.getElementById('confetti');
+    var colors = ['#D4AF37','#F0D070','#E8C84A','#FDF0A8','#C8A820','#FFE066','#B8860B'];
+    var sizes  = [4, 5, 6, 7, 8, 5, 4];
+    var count  = 18;
+    for (var i = 0; i < count; i++) {
+      var d = document.createElement('div');
+      d.className = 'dot';
+      var s = sizes[i % sizes.length];
+      d.style.cssText = [
+        'width:' + s + 'px',
+        'height:' + s + 'px',
+        'background:' + colors[i % colors.length],
+        'left:' + (Math.random() * 100) + '%',
+        '--dur:' + (14 + Math.random() * 16) + 's',
+        '--delay:' + (Math.random() * 14) + 's'
+      ].join(';');
+      field.appendChild(d);
+    }
+  })();
+
+  /* ── Copy review ── */
+  function copyReview() {
+    var selected = document.querySelector('input[name="review"]:checked');
+    if (!selected) {
+      showToast('Please select a review first.');
+      return;
+    }
+    var text = selected.value;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        showSuccess();
+      }).catch(function() {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      document.execCommand('copy');
+      showSuccess();
+    } catch(e) {
+      showToast('Copy failed. Please copy manually.');
+    }
+    document.body.removeChild(ta);
+  }
+
+  function showSuccess() {
+    var msg = document.getElementById('successMsg');
+    msg.classList.add('visible');
+    setTimeout(function() { msg.classList.remove('visible'); }, 5000);
+  }
+
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 3000);
+  }
+</script>
+</body>
+</html>
